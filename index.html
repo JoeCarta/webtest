@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Numerical Integration of \( x^2 \)</title>
+  <title>Trapezoidal Rule Approximation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Styling -->
   <style>
     body {
       font-family: 'Times New Roman', Times, serif;
@@ -51,6 +50,16 @@
       border-left: 4px solid #ccc;
     }
 
+    a.button {
+      display: inline-block;
+      margin-top: 1em;
+      padding: 0.4em 1em;
+      background: #eee;
+      border: 1px solid #aaa;
+      text-decoration: none;
+      color: #000;
+    }
+
     footer {
       margin-top: 4em;
       font-size: 0.9em;
@@ -58,18 +67,6 @@
     }
   </style>
 
-  <!-- MathJax -->
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['\\(', '\\)']],
-        displayMath: [['\\[', '\\]']]
-      }
-    };
-  </script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-  <!-- Calculation Script -->
   <script>
     function trapezoidalRule(f, a, b, n) {
       const h = (b - a) / n;
@@ -88,6 +85,16 @@
 
     window.onload = () => runApproximation(4);
   </script>
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 
 <body>
@@ -99,15 +106,14 @@
   <section>
     <h2>Overview</h2>
     <p>
-      We approximate the definite integral
+      We approximate the integral
       \[
         \int_0^1 x^2 \, dx = \frac{1}{3}
       \]
-      using the trapezoidal rule. Below, you can select different numbers of subintervals \( n \) to observe how the approximation improves.
+      using the trapezoidal rule. Choose a value of \( n \) (number of subintervals) below to see how accuracy improves:
     </p>
 
-    <div style="margin-top: 1.5em;">
-      <strong>Select \( n \):</strong><br>
+    <div>
       <button onclick="runApproximation(2)">n = 2</button>
       <button onclick="runApproximation(4)">n = 4</button>
       <button onclick="runApproximation(8)">n = 8</button>
@@ -119,8 +125,8 @@
   </section>
 
   <section>
-    <h2>Code Used</h2>
-    <p>The following JavaScript function implements the trapezoidal rule:</p>
+    <h2>The Code</h2>
+    <p>This is the JavaScript function implementing the trapezoidal rule:</p>
     <pre><code>function trapezoidalRule(f, a, b, n) {
   const h = (b - a) / n;
   let sum = 0.5 * (f(a) + f(b));
@@ -129,12 +135,16 @@
   }
   return sum * h;
 }</code></pre>
-    <p>This is applied to the function \( f(x) = x^2 \) over the interval \([0, 1]\).</p>
+
+    <a href="./trapezoidal.js" class="button" download>Download trapezoidal.js</a>
+
+    <p>To run locally:</p>
+    <pre><code>$ node trapezoidal.js</code></pre>
   </section>
 
   <footer>
     <hr>
-    <p><em>Styled with academic intent. Math rendered via MathJax. Hosted on Vercel.</em></p>
+    <p><em>Math rendered via MathJax. Website hosted on Vercel.</em></p>
   </footer>
 </body>
 </html>
