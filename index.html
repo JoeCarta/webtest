@@ -2,93 +2,51 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Blackbody Radiation and Planck’s Law</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <title>Integral Approximation</title>
   <style>
-    body {
-      font-family: 'Times New Roman', Times, serif;
-      font-size: 16px;
-      max-width: 720px;
-      margin: 3em auto;
-      padding: 0 1.5em;
-      line-height: 1.7;
-      text-align: justify;
-      background: #fff;
-      color: #111;
-    }
-
-    h1, h2 {
-      font-family: 'Helvetica Neue', Helvetica, sans-serif;
-      font-weight: 600;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 0.2em;
-      margin-top: 2.5em;
-    }
-
-    .math-display {
-      text-align: center;
-      margin: 1.5em 0;
-      font-size: 1.2em;
-    }
-
-    footer {
-      margin-top: 4em;
-      font-size: 0.9em;
-      color: #555;
-    }
+    body { font-family: Georgia, serif; max-width: 700px; margin: 2em auto; line-height: 1.6; }
+    input[type=range] { width: 100%; }
+    code, pre { background: #f0f0f0; padding: 0.2em 0.5em; display: block; }
   </style>
-
   <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['\\(', '\\)']],
-        displayMath: [['\\[', '\\]']]
-      },
-      options: {
-        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    function trapezoidalRule(f, a, b, n) {
+      const h = (b - a) / n;
+      let sum = 0.5 * (f(a) + f(b));
+      for (let i = 1; i < n; i++) {
+        sum += f(a + i * h);
       }
-    };
+      return sum * h;
+    }
+
+    function update() {
+      const n = parseInt(document.getElementById('n').value);
+      const output = document.getElementById('result');
+      const approx = trapezoidalRule(x => x * x, 0, 1, n);  // ∫₀¹ x² dx
+      output.textContent = `n = ${n} → Approximate ∫₀¹ x² dx ≈ ${approx.toFixed(6)}`;
+    }
+
+    window.onload = update;
   </script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-
 <body>
-  <header>
-    <h1>Blackbody Radiation and the Planck Integral</h1>
-    <p><strong>Joseph C.</strong> – Hunter College, 2025</p>
-  </header>
 
-  <section>
-    <h2>Introduction</h2>
-    <p>
-      Classical physics failed to predict the spectral distribution of blackbody radiation at high frequencies—leading to the so-called "ultraviolet catastrophe." Planck resolved this by assuming energy quantization, yielding a finite energy distribution integral:
-    </p>
+<h1>Approximating an Integral</h1>
+<p>
+  Consider the integral:
+  \[
+    \int_0^1 x^2 \, dx = \frac{1}{3}
+  \]
+  We'll approximate it numerically using the trapezoidal rule.
+</p>
 
-    <div class="math-display">
-      \[
-        u(\nu, T) = \frac{8\pi h \nu^3}{c^3} \cdot \frac{1}{e^{h\nu / kT} - 1}
-      \]
-    </div>
+<label for="n">Choose number of subintervals (n):</label>
+<input id="n" type="range" min="2" max="100" value="10" oninput="update()">
+<pre id="result"></pre>
 
-    <p>
-      Integrating over all frequencies gives the total energy density:
-    </p>
+<p>
+  The more subintervals, the closer the approximation gets to the exact value of \( \frac{1}{3} \approx 0.333\ldots \)
+</p>
 
-    <div class="math-display">
-      \[
-        U(T) = \int_0^\infty u(\nu, T) \, d\nu = \frac{8\pi^5 k^4}{15 h^3 c^3} T^4
-      \]
-    </div>
-
-    <p>
-      This result is consistent with the Stefan–Boltzmann law and marked the birth of quantum theory.
-    </p>
-  </section>
-
-  <footer>
-    <hr>
-    <p><em>Styled with academic minimalism. Hosted on Vercel.</em></p>
-  </footer>
 </body>
 </html>
