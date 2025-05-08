@@ -1,6 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  test
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculus II Extra Credit</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+          onload="renderMathInElement(document.body, {delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ]});"></script>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
+  <style>
+    html {
+      background-color: rgb(250, 249, 246);
+    }
+
+    body {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      background-color: #ffffff;
+      color: #111111;
+      width: 10in;
+      min-height: 11in;
+      margin: 2rem auto;
+      padding: 1.25in;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: normal;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .author {
+      text-align: center;
+      font-style: italic;
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .abstract {
+      border-left: 4px solid #ccc;
+      padding-left: 1rem;
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+
+    p {
+      text-align: justify;
+      margin-top: 1rem;
+    }
+
+    .math {
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+
+    blockquote {
+      margin-left: 1.5rem;
+      padding-left: 1rem;
+      border-left: 3px solid #ccc;
+      color: #444;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+    }
+
+    th, td {
+      border: 1px solid #aaa;
+      padding: 0.5rem;
+      text-align: left;
+    }
+
+    @media print {
+      html, body {
+        background: white;
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        width: auto;
+        min-height: auto;
+        padding: 1in;
+        font-size: 12pt;
+      }
+    }
+  </style>
 </head>
+<body>
+  <h1>Calculus II Extra Credit</h1>
+  <div class="author">Joseph Cartafalsa</div>
+  <div class="abstract">
+    <strong>Abstract:</strong> This document contains both my write-up for Assignment 1 and my code for Assignment 2.
+  </div>
+  
+  <h2>1. Introduction</h2>
+  <p>Insert your introduction text here.</p>
+  <div class="math">
+    <p>The Rayleigh–Jeans Law predicts that the energy density of electromagnetic radiation in a black body at temperature $T$ is given by:</p>
+    $$u(\nu, T) = \frac{8\pi \nu^2}{c^3} \cdot \frac{k,T}{h\nu}$$
+    <p>where $k$ is the Boltzmann constant, $h$ is Planck's constant, and $c$ is the speed of light.</p>
+    <p>To get the total energy density, we integrate over all frequencies:</p>
+    $$U(T) = \int_0^\infty u(\nu, T) \, d\nu$$
+    <p>This integral diverges, leading to the ultraviolet catastrophe. The resolution of this problem was provided by Max Planck in 1900, who proposed that electromagnetic radiation is quantized and can only be emitted or absorbed in discrete packets of energy called quanta or photons.</p>
+    <p>Planck's law of black body radiation is given by:</p>
+    $$u(\nu, T) = \frac{8\pi h \nu^3}{c^3} \cdot \frac{1}{e^{h\nu/kT} - 1}$$
+
+  </div>
+
+  <h2>2. Integrating using Planck's equation</h2>
+  <p>text</p>
+  <div class="math">
+    <p>$$\int_0^\infty \frac{8\pi h \nu^3}{c^3} \cdot \frac{1}{e^{h\nu/kT} - 1} \, d\nu$$</p>
+    <p>here we can perform a change of variables to make the integral easier to solve. Let $x = \frac{h\nu}{kT}$, then $d\nu = \frac{kT}{h} dx$ and $\nu = \frac{kTx}{h}$. The limits of integration remain the same as $x$ goes from 0 to $\infty$ as $\nu$ does.</p>
+    <p>Substituting these into the integral gives us:</p>
+    <p>$$\int_0^\infty \frac{8\pi h}{c^3} \cdot \frac{k^4 T^4}{h^4} \cdot \frac{x^3}{e^{x} - 1} \, dx$$</p>
+    <p>which simplifies to:</p>
+    <p>$$\frac{8\pi k^4 T^4}{c^3 h^3} \int_0^\infty \frac{x^3}{e^{x} - 1} \, dx$$</p>
+  </div>
+
+  <h2>Evaluating the equation using the Gamma and Zeta functions</h2>
+  <p>Insert your main results here. More equations:</p>
+  <div class="math">
+    <div>
+      <P>To evaluate:</P>
+      <div class="math">
+        <p>$$\int_0^\infty \frac{x^3}{e^{x} - 1} \, dx$$</p>
+        <p>We know that while $x$ is positive, $$\frac{1}{e^{x} - 1}$$ is a fraction less than 1. In other words, for $x > 0$, $$\frac{1}{e^{x} - 1} < 1$$. So, multiplying by $e^{-x}$, we have a term in the form $e/(1-e)$:</p>
+        <p>$$\frac{e^{-x}}{1-e^{-x}}$$</p>
+        <p>Which in terms of $r$ is in the form:</p>
+        <p>$$\frac{1}{1-r}$$</p>
+        <p>Where $r = e^{-x}$. This is a geometric series, and we can use the formula for the sum of a geometric series:</p>
+        <p>$$\sum_{n=0}^\infty r^n = \frac{1}{1-r}$$</p>
+        <p>Therefore, we can write:</p>
+        <p>$$\frac{1}{e^{x} - 1} = \sum_{n=1}^\infty e^{-nx}$$</p>
+        <p>Substituting this into the integral gives us:</p>
+        <p>$$\int_0^\infty x^3 \sum_{n=1}^\infty e^{-nx} \, dx$$</p>
+        <p>We can switch the order of summation and integration to get:</p>
+        <p>$$\sum_{n=1}^\infty \int_0^\infty x^3 e^{-nx} \, dx$$</p>
+        <p>The validity of this step comes from the dominated convergence theorem, which states that if a sequence of functions converges pointwise to a function and is dominated by an integrable function, then we can interchange the limit and the integral.</p>
+        <p>Now we can take a closer look at the integral:</p>
+        <p>$$\int_0^\infty x^3 e^{-nx} \, dx$$</p>
+        <p>Using $u$-substitution, let $u = nx$, then $du = n \, dx$ and $dx = \frac{du}{n}$. The limits of integration remain the same as $x$ goes from 0 to $\infty$ as $u$ does. Substituting these into the integral gives us:</p>
+        <p>$$\int_0^\infty \frac{u^3}{n^4} e^{-u} \, du$$</p>
+        <p>Or:</p>
+        <p>$$\frac{1}{n^4} \int_0^\infty u^3 e^{-u} \, du$$</p>
+        <p>This looks like:</p>
+        <p>$$\frac{1}{n^4} \Gamma(4)$$</p>
+        <p>Where $\Gamma(n) = (n-1)!$ is the gamma function.</p>  
+        <button style="background-color: #555555; color: white; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'" onclick="document.getElementById('gamma-derivation').style.display='block'">Derivation of Gamma Function</button>
+        <div id="gamma-derivation" style="display:none; margin-top: 1rem;">
+          <p>The gamma function is defined as:</p>
+          <p>$$\Gamma(n) = \int_0^\infty x^{n-1} e^{-x} \, dx$$</p>
+          <p>For $n=1$, we have:</p>
+          <p>$$\Gamma(1) = \int_0^\infty e^{-x} \, dx = 1$$</p>
+          <p>To prove that $\Gamma(n) = (n-1)!$, we can prove that $\Gamma(n+1) = n \cdot \Gamma(n)$:</p>
+          <p>$$\Gamma(n+1) = \int_0^\infty x^n e^{-x} \, dx$$</p>
+          <p>Using integration by parts, let $u = x^n$ and $dv = e^{-x} \, dx$. Then $du = n x^{n-1} \, dx$ and $v = -e^{-x}$. So we have:</p>
+          <p>$$\Gamma(n+1) = -x^n e^{-x} \bigg|_0^\infty + n \int_0^\infty x^{n-1} e^{-x} \, dx$$</p>
+          <p>The first term evaluates to 0 as $x \to \infty$ and $x=0$. So we have:</p>
+          <p>$$\Gamma(n+1) = n \int_0^\infty x^{n-1} e^{-x} \, dx$$</p>
+          <p>$$\Gamma(n+1) = n \cdot \Gamma(n)$$</p>
+          <p>By induction, we can show that $\Gamma(n) = (n-1)!$ for all positive integers $n$. Therefore, we can write:</p>
+          <p>$$\int_0^\infty x^3 e^{-nx} \, dx = \frac{1}{n^4} \cdot 6$$</p>
+        </div>
+        <p>Where $\Gamma(4) = 3! = 6$. Now we can substitute this back into the sum:</p>
+        <p>$$\sum_{n=1}^\infty \frac{6}{n^4}$$</p>
+        <p>We can factor out the 6 to get:</p>
+        <p>$$6 \sum_{n=1}^\infty \frac{1}{n^4}$$</p>
+        <p>And this is the Riemann zeta function $\zeta(4)$:</p>
+        <p>Press this button to show the derivation of the zeta function:</p>
+          <button onclick="document.getElementById('zeta-derivation').style.display='block'">Show Derivation</button>
+          <div id="zeta-derivation" style="display:none; margin-top: 1rem;">
+            here we can use Fourier series and Parseval's Identity to derive the Riemann zeta function at 4:
+            <p>The Riemann zeta function is defined as:</p>
+            $$\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}$$
+            <p>For $s=4$, we have:</p>
+            $$\zeta(4) = \sum_{n=1}^\infty \frac{1}{n^4}$$
+            <p>Using Fourier series and Parseval's Identity, we can derive $\zeta(4)$:</p>
+            <p>Consider the Fourier series for the function $f(x) = x^2$ on the interval $[-\pi, \pi]$:</p>
+            $$f(x) = x^2 = \frac{\pi^2}{3} + 4 \sum_{n=1}^\infty \frac{(-1)^n}{n^2} \cos(nx)$$
+            <p>Parseval's Identity states that:</p>
+            $$\frac{1}{\pi} \int_{-\pi}^\pi |f(x)|^2 \, dx = a_0^2 + 2 \sum_{n=1}^\infty (a_n^2 + b_n^2)$$
+            <p>Applying Parseval's Identity to $f(x) = x^2$, we can compute the coefficients and relate them to $\zeta(4)$. After simplifications, we find:</p>
+            $$\zeta(4) = \frac{\pi^4}{90}$$
+            <p>This completes the derivation of the Riemann zeta function at $s=4$.</p>
+
+
+    </div>
+
+    $$\int_0^\infty \frac{x^3}{e^{x} - 1} \, dx = \Gamma(4) \cdot \zeta(4)$$
+    where $\Gamma(n) = (n-1)!$ and $\zeta(s)$ is the Riemann zeta function. For $s=4$, we have:
+    $$\zeta(4) = \frac{\pi^4}{90}$$
+    Therefore, we can write:
+    $$\int_0^\infty \frac{x^3}{e^{x} - 1} \, dx = 6 \cdot \frac{\pi^4}{90} = \frac{\pi^4}{15}$$
+  </div>
+
+  <h2>4. Conclusion</h2>
+  <p>Final thoughts and summary of your work go here.</p>
+</body>
 </html>
