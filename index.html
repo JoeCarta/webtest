@@ -261,7 +261,7 @@
       = \int_{0}^{\infty} x^{3}\sum_{n=1}^{\infty} e^{-nx}\,dx
       = \sum_{n=1}^{\infty} \int_{0}^{\infty} x^{3} e^{-nx}\,dx.$$
   </p>
-  <p>To ensure that our evaluation remains completely rigorous, we are going to have to consult the wheel of integration</p>
+  <p>To ensure that our evaluation remains completely rigorous, we should let the Wheel of Integration decide what to do next via its respective HTML button</p>
     <button style="
     background: linear-gradient(90deg, #fff8f2 0%, #f0e1cd 100%);
     color: #000000;
@@ -275,7 +275,7 @@
     transition: background 0.5s cubic-bezier(.4,0,.2,1), color 0.3s, box-shadow 0.2s, border-color 0.3s;
     margin-bottom: 0.5em;
     letter-spacing: 0.01em;
-  " onclick="spinWheel()">What are we gonna do now?</button>
+  " onclick="spinWheel()">Ask the Wheel of Integration</button>
     <div class="wheel-container">
     <div class="pointer"></div>
     <div class="wheel" id="wheel">
@@ -298,7 +298,7 @@
     transition: opacity 0.5s, max-height 0.5s;
   ">
     <p>
-      The inner integral is evaluated using u-substitution.  Let $u = n x$ (so $du = n\,dx$) to obtain
+      We landed on u-sub, hopefully this Calc II technique leads our integral into the form of a recognizable analytic integration of a function that has a known value.  Let $u = n x$ (so $du = n\,dx$) to obtain
     </p>
     <p>
       $$\int_{0}^{\infty} x^{3} e^{-nx}\,dx
@@ -307,7 +307,14 @@
         = \frac{1}{n^{4}} \cdot \Gamma(4).$$  
     </p>
     <p>
-      Thanks, wheel of integration, your insights have revealed an nth fraction of the Gamma Function, which is a known value $\Gamma(4) = 6$.
+      Thanks, wheel of integration, your insights have revealed an nth fraction of the Gamma Function, which is a known value $\Gamma(4) = 6$ which can be substituted into the summation.
+    </p>
+    <p>
+      $$I = \sum_{n=1}^{\infty} \frac{1}{n^{4}} \cdot 6 = 6 \sum_{n=1}^{\infty} \frac{1}{n^{4}}$$
+    </p>
+    <p>
+      Wow, the series $\sum_{n=1}^{\infty} \frac{1}{n^{4}}$ is known as the Riemann zeta function at 4, denoted as $\zeta(4)$. The value of $\zeta(4)$ is known to be $\frac{\pi^4}{90}$, so we can write:
+      $$I = 6 \cdot \zeta(4) = 6 \cdot \frac{\pi^4}{90} = \frac{\pi^4}{15}$$
     </p>
     <button 
     style="
@@ -350,31 +357,14 @@
   <p>$$\sum_{n=1}^\infty \frac{6}{n^4}$$</p>
     <p>We can factor out the 6 to get:</p>
   <p>$$6 \sum_{n=1}^\infty \frac{1}{n^4}$$</p>
-  <p>And this is the Riemann zeta function $\zeta(4)$:</p>
+  <p>And this is the Riemann zeta function $\zeta(4)$ = $$\frac{\pi^4}{90}$$</p>
   <button 
     style="background: linear-gradient(90deg, #fff8f2 0%, #f0e1cd 100%); color: #000000; border: 1px solid #e3e3e3; border-radius: 4px; padding: 0.55em 1.1em; font-size: 1em; font-family: 'EB Garamond', serif; cursor: pointer; box-shadow: 0 1px 4px rgba(34,48,74,0.07); transition: background 0.5s cubic-bezier(.4,0,.2,1), color 0.3s, box-shadow 0.2s, border-color 0.3s; margin-bottom: 0.5em; letter-spacing: 0.01em;" 
     onclick="showZetaDerivation()"
     id="zeta-btn"
   >Source?</button>
   <div id="zeta-derivation" style="display: none; opacity: 0; margin-top: 1rem; border-left: 4px solid #ccc; padding-left: 1rem; transition: opacity 0.5s;">
-  <p>Here we can use Fourier series and Parseval's Identity to derive the Riemann zeta function at 4:</p>
-  <p>The Riemann zeta function is defined as:</p>
-  $$\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}$$
-  <p>For $s=4$, we have:</p>
-  $$\zeta(4) = \sum_{n=1}^\infty \frac{1}{n^4}$$
-  <p>Using Fourier series and Parseval's Identity, we can derive $\zeta(4)$:</p>
-  <p>Consider the Fourier series for the function $f(x) = x^2$ on the interval $[-\pi, \pi]$:</p>
-  $$f(x) = x^2 = \frac{\pi^2}{3} + 4 \sum_{n=1}^\infty \frac{(-1)^n}{n^2} \cos(nx)$$
-  <p>Parseval's Identity states that:</p>
-  $$\frac{1}{\pi} \int_{-\pi}^\pi |f(x)|^2 \, dx = a_0^2 + 2 \sum_{n=1}^\infty (a_n^2 + b_n^2)$$
-  <p>Applying Parseval's Identity to $f(x) = x^2$, we can compute the coefficients and relate them to $\zeta(4)$. After simplifications, we find:</p>
-  $$\zeta(4) = \frac{\pi^4}{90}$$
-  <p>This completes the derivation of the Riemann zeta function at $s=4$.</p>
-  
-</div>
-  <p>Therefore, we can write:
-</div>
-  $$\int_0^\infty \frac{x^3}{e^{x} - 1} \, dx = 6 \cdot \frac{\pi^4}{90} = \frac{\pi^4}{15}$$ </p>
+  <p>Here we can use Fourier series and Parseval's Identity to derive the Riemann zeta function at&nbsp;4:</p> <p>The Riemann zeta function is defined as:</p> $$\zeta(s)=\sum_{n=1}^{\infty}\frac{1}{n^{s}},\qquad s>1.$$ <p>For&nbsp;$s=4$ we have:</p> $$\zeta(4)=\sum_{n=1}^{\infty}\frac{1}{n^{4}}.$$ <p>Using Fourier series and Parseval's Identity, we can compute $\zeta(4)$:</p> <p>Consider the Fourier series of the even function $f(x)=x^{2}$ on the interval $[-\pi,\pi]$:</p> $$ f(x)=x^{2}=\frac{\pi^{2}}{3}+4\sum_{n=1}^{\infty}\frac{(-1)^{n}}{n^{2}}\cos(nx), \qquad \bigl(a_{0}= \tfrac{2\pi^{2}}{3},\; a_{n}= \tfrac{4(-1)^{n}}{n^{2}},\; b_{n}=0\bigr). $$ <p>Parseval's Identity (with the coefficient normalisation above) states:</p> $$ \frac{1}{\pi}\int_{-\pi}^{\pi}\!|f(x)|^{2}\,dx =\frac{a_{0}^{2}}{2}+\sum_{n=1}^{\infty}(a_{n}^{2}+b_{n}^{2}). $$ <p>Applying Parseval to $f(x)=x^{2}$ gives</p> $$ \frac{1}{\pi}\int_{-\pi}^{\pi}x^{4}\,dx =\frac{\left(\tfrac{2\pi^{2}}{3}\right)^{2}}{2} +\sum_{n=1}^{\infty}\frac{16}{n^{4}} \;=\; \frac{2\pi^{4}}{9} +16\,\zeta(4). $$ <p>Since $\displaystyle\frac{1}{\pi}\int_{-\pi}^{\pi}x^{4}\,dx =\frac{2\pi^{4}}{5}$, equating the two sides yields</p> $$ \frac{2\pi^{4}}{5}=\frac{2\pi^{4}}{9}+16\,\zeta(4) \quad\Longrightarrow\quad \boxed{\displaystyle\zeta(4)=\frac{\pi^{4}}{90}}. $$ </div> <p>Therefore, by the Euler–Gamma relation $\displaystyle\int_{0}^{\infty}\frac{x^{s-1}}{e^{x}-1}\,dx =\Gamma(s)\,\zeta(s)$ with $s=4$ (so $\Gamma(4)=6$) we conclude:</p> </div> $$ \int_{0}^{\infty}\frac{x^{3}}{e^{x}-1}\,dx =\Gamma(4)\zeta(4) = 6\cdot\frac{\pi^{4}}{90} =\frac{\pi^{4}}{15}. $$
 <script>
   let rotation = 0;
   function spinWheel() {
