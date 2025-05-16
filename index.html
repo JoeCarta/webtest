@@ -16,7 +16,69 @@
     html {
       background-color: rgb(250, 249, 246);
     }
+        .wheel-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 50px auto;
+    }
 
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(
+        #f94144 0deg 72deg,
+        #f3722c 72deg 144deg,
+        #90be6d 144deg 216deg,
+        #577590 216deg 288deg,
+        #f9c74f 288deg 360deg
+      );
+      transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+      pointer-events: none;
+    }
+
+    .label {
+      position: absolute;
+      width: 50%;
+      left: 50%;
+      top: 50%;
+      transform-origin: 0% 0%;
+      text-align: center;
+      font-weight: bold;
+      font-size: 12px;
+      color: #fff;
+      padding: 27%;
+    }
+
+    .label:nth-child(1) { transform: rotate(36deg) translate(-50%, -100%); }
+    .label:nth-child(2) { transform: rotate(108deg) translate(-50%, -100%); }
+    .label:nth-child(3) { transform: rotate(180deg) translate(-50%, -100%); }
+    .label:nth-child(4) { transform: rotate(252deg) translate(-50%, -100%); }
+    .label:nth-child(5) { transform: rotate(324deg) translate(-50%, -100%); }
+
+    .label span {
+      display: inline-block;
+      /*transform: rotate(-36deg);  Will be overridden below for each label */
+    }
+
+    .label:nth-child(1) span { transform: rotate(-36deg); }
+    .label:nth-child(2) span { transform: rotate(-108deg); }
+    .label:nth-child(3) span { transform: rotate(-180deg); }
+    .label:nth-child(4) span { transform: rotate(-252deg); }
+    .label:nth-child(5) span { transform: rotate(-324deg); }
+
+    .pointer {
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 30px solid black;
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: rotate(180deg) translateX(50%);
+    }
     body {
       font-family: 'EB Garamond', serif;
       font-size: 1.1rem;
@@ -102,6 +164,25 @@
         padding: 1in;
         font-size: 12pt;
       }
+      .image-row {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin: 1em 0;
+        flex-wrap: wrap; /* optional, allows responsiveness */
+      }
+
+      .image-container {
+        text-align: center;
+        max-width: 15px; /* Adjust as needed */
+      }
+
+      .image-container img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 4px; /* optional */
+      }
     }
   </style>
 </head>
@@ -109,112 +190,249 @@
   <h1>Calculus II Extra Credit</h1>
   <div class="author">Joseph Cartafalsa</div>
   <div class="abstract">
-    <strong>Abstract:</strong> This document contains both my write-up for Assignment 1 and my code for Assignment 2.
+    This document contains both my write-up for Assignment 1 and my code for Assignment 2.
   </div>
-  
+  <h2>Integrating Planck's Law</h2>
+  <p>Planck’s law gives you the amount of light energy (radiation) emitted by a hot object at each individual wavelength. Specifically, it tells you how bright or intense a certain color (wavelength) of light is, based on the object’s temperature.</p>
+  <p>$$u(\nu, T) = \frac{8\pi h \nu^3}{c^3} \cdot \frac{1}{e^{h\nu/kT} - 1}$$ where:</p>
+  <ul>
+    <li>$u(\nu, T)$ is the energy density of radiation at frequency $\nu$ and temperature $T$.</li>
+    <li>$h$ is Planck's constant, approximately $6.626 \times 10^{-34} \, \text{Js}$.</li>
+    <li>$c$ is the speed of light in vacuum, approximately $3.00 \times 10^8 \, \text{m/s}$.</li>
+    <li>$k$ is the Boltzmann constant, approximately $1.381 \times 10^{-23} \, \text{J/K}$.</li>
+    <li>$T$ is the absolute temperature of the black body in kelvins (K).</li>
+  </ul>
+  <p></p>
   <h2>1. Introduction</h2>
-  <p>Insert your introduction text here.</p>
   <div class="math">
-    <p>The Rayleigh–Jeans Law predicts that the energy density of electromagnetic radiation in a black body at temperature $T$ is given by:</p>
-    $$u(\nu, T) = \frac{8\pi \nu^2}{c^3} \cdot \frac{k,T}{h\nu}$$
-    <p>where $k$ is the Boltzmann constant, $h$ is Planck's constant, and $c$ is the speed of light.</p>
-    <p>To get the total energy density, we integrate over all frequencies:</p>
-    $$U(T) = \int_0^\infty u(\nu, T) \, d\nu$$
-    <p>This integral diverges, leading to the ultraviolet catastrophe. The resolution of this problem was provided by Max Planck in 1900, who proposed that electromagnetic radiation is quantized and can only be emitted or absorbed in discrete packets of energy called quanta or photons.</p>
-    <p>Planck's law of black body radiation is given by:</p>
-    $$u(\nu, T) = \frac{8\pi h \nu^3}{c^3} \cdot \frac{1}{e^{h\nu/kT} - 1}$$
+    <p>In the late 19th century, physicists faced a significant challenge in understanding the energy distribution of electromagnetic radiation emitted by a black body. Classical physics, through the Rayleigh–Jeans Law, predicted that the energy density of electromagnetic radiation in a black body at temperature $T$ is given by:</p>
+    <p>$$u(\nu, T) = \frac{8\pi \nu^2}{c^3} \cdot kT$$</p>
+    <p>where $k$ is the Boltzmann constant, $\nu$ is the frequency, and $c$ is the speed of light. We can integrate this guy over all frequencies to find the total energy density:</p>
+    <p>$$U(T) = \int_0^\infty u(\nu, T) \, d\nu$$</p>
+    <p>uh oh, the integral diverges as $\nu \to \infty$, leading to the 'ultraviolet catastrophe.'</p>
+    <p>This divergence implied an infinite amount of energy, which was unphysical. The resolution to this problem came in 1900 when, in what he referred to as an "an act of desperation", Max Planck matched the empirically observed high frequency radiation by discretizing energy released over a continuous spectrum. This led to the insight that electromagnetic radiation is quantized and can only be emitted or absorbed in discrete packets of energy: quanta, or photons.</p>
+    <div class="image-row" style="display: flex; justify-content: center; gap: 20px; margin: 0em 0;">
+      <div class="image-container" style="text-align: center; width: 120px;">
+                <p style="font-size: 0.8em; margin-top: 0.5em;">Max Planck in 1878</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/62/Max_Planck_1878.GIF" alt="Max Planck in 1878" style="width: 100px; height: 120px; object-fit: cover; border-radius: 4px; display: block; margin: 0 auto;">
 
+      </div>
+      <div class="image-container" style="text-align: center; width: 120px;">
+                <p style="font-size: 0.8em; margin-top: 0.5em;">Max Planck in 1901</p>
+        <img src="https://www.researchgate.net/profile/John-Crepeau/publication/267650295/figure/fig6/AS:295629113839621@1447494881975/Max-Planck-in-1901-one-year-after-he-published-his-paper-on-the-quantum-of-action.png" alt="Max Planck in 1901" style="width: 100px; height: 120px; object-fit: cover; border-radius: 4px; display: block; margin: 0 auto;">
+      </div>
+  </div>
+    <p>Planck's hypothesis led to the formulation of Planck's Law of black body radiation, which accurately describes the energy density of radiation as:</p>
+    <p>$$u(\nu, T) = \frac{8\pi h \nu^3}{c^3} \cdot \frac{1}{e^{h\nu/kT} - 1}$$</p>
+    <p>This equation resolved the ultraviolet catastrophe and laid the foundation for quantum mechanics. But what happens when we actually carry out the integration: By integrating $u(\nu, T)$ over all frequencies, we can determine the total energy density $U(T)$</p>
+    <p>$$U(T) = \int_0^\infty u(\nu, T) \, d\nu = \int_0^\infty \frac{8\pi h \nu^3}{c^3} \cdot \frac{1}{e^{h\nu/kT} - 1} \, d\nu$$</p>
+    <p>This integral forms the basis for deriving the Stefan–Boltzmann Law and calculating the Stefan–Boltzmann constant $\sigma$. In the following sections, we will simplify and evaluate this improper integral with calc II level techniques using stuff like substitution, the Gamma function, and the Riemann zeta function.</p>
   </div>
 
-  <h2>2. Integrating using Planck's equation</h2>
-  <p>text</p>
+  <h2>2. Simplifying Planck's Integral</h2>
+  <p>Taking a look at the improper integral:</p>
   <div class="math">
     <p>$$\int_0^\infty \frac{8\pi h \nu^3}{c^3} \cdot \frac{1}{e^{h\nu/kT} - 1} \, d\nu$$</p>
-    <p>here we can perform a change of variables to make the integral easier to solve. Let $x = \frac{h\nu}{kT}$, then $d\nu = \frac{kT}{h} dx$ and $\nu = \frac{kTx}{h}$. The limits of integration remain the same as $x$ goes from 0 to $\infty$ as $\nu$ does.</p>
-    <p>Substituting these into the integral gives us:</p>
-    <p>$$\int_0^\infty \frac{8\pi h}{c^3} \cdot \frac{k^4 T^4}{h^4} \cdot \frac{x^3}{e^{x} - 1} \, dx$$</p>
-    <p>which simplifies to:</p>
+    <p>Here we can perform a change of variables to make the equation dimensionless and the integral easier to solve. Let $x = \frac{h\nu}{kT}$, then $d\nu = \frac{kT}{h} dx$ and $\nu = \frac{kTx}{h}$. Source? It was revealed to me in a vision. The limits of integration remain the same as $x$ goes from 0 to $\infty$ as $\nu$ does.</p>
+    <p>Substituting these into the integral:</p>
+    $$\int_0^\infty \frac{8\pi h \left(\frac{kT}{h} x\right)^3}{c^3} \cdot \frac{1}{e^{(x)} - 1} \cdot (\frac{kT}{h} \, dx)$$
+
+    <p>$$\to \int_0^\infty \frac{8\pi h}{c^3} \cdot \frac{k^4 T^4}{h^4} \cdot \frac{x^3}{e^{x} - 1} \, dx$$</p>
+    <p>now we have our terms on the left and a doable integral on the right:</p>
     <p>$$\frac{8\pi k^4 T^4}{c^3 h^3} \int_0^\infty \frac{x^3}{e^{x} - 1} \, dx$$</p>
   </div>
 
-  <h2>Evaluating the equation using the Gamma and Zeta functions</h2>
-  <p>Insert your main results here. More equations:</p>
-  <div class="math">
-    <div>
-      <P>To evaluate:</P>
-      <div class="math">
-        <p>$$\int_0^\infty \frac{x^3}{e^{x} - 1} \, dx$$</p>
-        <p>We know that while $x$ is positive, $$\frac{1}{e^{x} - 1}$$ is a fraction less than 1. In other words, for $x > 0$, $$\frac{1}{e^{x} - 1} < 1$$. So, multiplying by $e^{-x}$, we have a term in the form $e/(1-e)$:</p>
-        <p>$$\frac{e^{-x}}{1-e^{-x}}$$</p>
-        <p>Which in terms of $r$ is in the form:</p>
-        <p>$$\frac{1}{1-r}$$</p>
-        <p>Where $r = e^{-x}$. This is a geometric series, and we can use the formula for the sum of a geometric series:</p>
-        <p>$$\sum_{n=0}^\infty r^n = \frac{1}{1-r}$$</p>
-        <p>Therefore, we can write:</p>
-        <p>$$\frac{1}{e^{x} - 1} = \sum_{n=1}^\infty e^{-nx}$$</p>
-        <p>Substituting this into the integral gives us:</p>
-        <p>$$\int_0^\infty x^3 \sum_{n=1}^\infty e^{-nx} \, dx$$</p>
-        <p>We can switch the order of summation and integration to get:</p>
-        <p>$$\sum_{n=1}^\infty \int_0^\infty x^3 e^{-nx} \, dx$$</p>
-        <p>The validity of this step comes from the dominated convergence theorem, which states that if a sequence of functions converges pointwise to a function and is dominated by an integrable function, then we can interchange the limit and the integral.</p>
-        <p>Now we can take a closer look at the integral:</p>
-        <p>$$\int_0^\infty x^3 e^{-nx} \, dx$$</p>
-        <p>Using $u$-substitution, let $u = nx$, then $du = n \, dx$ and $dx = \frac{du}{n}$. The limits of integration remain the same as $x$ goes from 0 to $\infty$ as $u$ does. Substituting these into the integral gives us:</p>
-        <p>$$\int_0^\infty \frac{u^3}{n^4} e^{-u} \, du$$</p>
-        <p>Or:</p>
-        <p>$$\frac{1}{n^4} \int_0^\infty u^3 e^{-u} \, du$$</p>
-        <p>This looks like:</p>
-        <p>$$\frac{1}{n^4} \Gamma(4)$$</p>
-        <p>Where $\Gamma(n) = (n-1)!$ is the gamma function.</p>  
-        <button style="background-color: #555555; color: white; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'" onclick="document.getElementById('gamma-derivation').style.display='block'">Derivation of Gamma Function</button>
-        <div id="gamma-derivation" style="display:none; margin-top: 1rem;">
-          <p>The gamma function is defined as:</p>
-          <p>$$\Gamma(n) = \int_0^\infty x^{n-1} e^{-x} \, dx$$</p>
-          <p>For $n=1$, we have:</p>
-          <p>$$\Gamma(1) = \int_0^\infty e^{-x} \, dx = 1$$</p>
-          <p>To prove that $\Gamma(n) = (n-1)!$, we can prove that $\Gamma(n+1) = n \cdot \Gamma(n)$:</p>
-          <p>$$\Gamma(n+1) = \int_0^\infty x^n e^{-x} \, dx$$</p>
-          <p>Using integration by parts, let $u = x^n$ and $dv = e^{-x} \, dx$. Then $du = n x^{n-1} \, dx$ and $v = -e^{-x}$. So we have:</p>
-          <p>$$\Gamma(n+1) = -x^n e^{-x} \bigg|_0^\infty + n \int_0^\infty x^{n-1} e^{-x} \, dx$$</p>
-          <p>The first term evaluates to 0 as $x \to \infty$ and $x=0$. So we have:</p>
-          <p>$$\Gamma(n+1) = n \int_0^\infty x^{n-1} e^{-x} \, dx$$</p>
-          <p>$$\Gamma(n+1) = n \cdot \Gamma(n)$$</p>
-          <p>By induction, we can show that $\Gamma(n) = (n-1)!$ for all positive integers $n$. Therefore, we can write:</p>
-          <p>$$\int_0^\infty x^3 e^{-nx} \, dx = \frac{1}{n^4} \cdot 6$$</p>
-        </div>
-        <p>Where $\Gamma(4) = 3! = 6$. Now we can substitute this back into the sum:</p>
-        <p>$$\sum_{n=1}^\infty \frac{6}{n^4}$$</p>
-        <p>We can factor out the 6 to get:</p>
-        <p>$$6 \sum_{n=1}^\infty \frac{1}{n^4}$$</p>
-        <p>And this is the Riemann zeta function $\zeta(4)$:</p>
-        <p>Press this button to show the derivation of the zeta function:</p>
-          <button onclick="document.getElementById('zeta-derivation').style.display='block'">Show Derivation</button>
-          <div id="zeta-derivation" style="display:none; margin-top: 1rem;">
-            here we can use Fourier series and Parseval's Identity to derive the Riemann zeta function at 4:
-            <p>The Riemann zeta function is defined as:</p>
-            $$\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}$$
-            <p>For $s=4$, we have:</p>
-            $$\zeta(4) = \sum_{n=1}^\infty \frac{1}{n^4}$$
-            <p>Using Fourier series and Parseval's Identity, we can derive $\zeta(4)$:</p>
-            <p>Consider the Fourier series for the function $f(x) = x^2$ on the interval $[-\pi, \pi]$:</p>
-            $$f(x) = x^2 = \frac{\pi^2}{3} + 4 \sum_{n=1}^\infty \frac{(-1)^n}{n^2} \cos(nx)$$
-            <p>Parseval's Identity states that:</p>
-            $$\frac{1}{\pi} \int_{-\pi}^\pi |f(x)|^2 \, dx = a_0^2 + 2 \sum_{n=1}^\infty (a_n^2 + b_n^2)$$
-            <p>Applying Parseval's Identity to $f(x) = x^2$, we can compute the coefficients and relate them to $\zeta(4)$. After simplifications, we find:</p>
-            $$\zeta(4) = \frac{\pi^4}{90}$$
-            <p>This completes the derivation of the Riemann zeta function at $s=4$.</p>
-
-
+  <h2>3. Evaluating the Integral $\displaystyle\int_0^\infty \frac{x^{3}}{e^{x}-1}\,dx$</h2>
+<div class="math">
+  <p>To compute
+    $$I = \int_{0}^{\infty} \frac{x^{3}}{e^{x}-1}\,dx,$$
+    we can recognize that the denominator by itself can be a geometric–series valid for $x>0$:
+  </p>
+  <p>
+    $$\frac{1}{e^{x}-1}
+      = \frac{e^{-x}}{1-e^{-x}}
+      = \sum_{n=1}^{\infty} e^{-nx}.$$
+  </p>
+  <p>
+    The series on the right converges absolutely and is dominated by $e^{-x}$, an $L^{1}(0,\infty)$ function. Hence, according to asking my professor after class if youre allowed to do this, we may interchange summation and integration:
+  </p>
+  <p>
+    $$I
+      = \int_{0}^{\infty} x^{3}\sum_{n=1}^{\infty} e^{-nx}\,dx
+      = \sum_{n=1}^{\infty} \int_{0}^{\infty} x^{3} e^{-nx}\,dx.$$
+  </p>
+  <p>To ensure that our evaluation remains completely rigorous, we are going to have to consult the wheel of integration</p>
+    <button style="
+    background: linear-gradient(90deg, #fff8f2 0%, #f0e1cd 100%);
+    color: #000000;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    padding: 0.55em 1.1em;
+    font-size: 1em;
+    font-family: 'EB Garamond', serif;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(34,48,74,0.07);
+    transition: background 0.5s cubic-bezier(.4,0,.2,1), color 0.3s, box-shadow 0.2s, border-color 0.3s;
+    margin-bottom: 0.5em;
+    letter-spacing: 0.01em;
+  " onclick="spinWheel()">What are we gonna do now?</button>
+    <div class="wheel-container">
+    <div class="pointer"></div>
+    <div class="wheel" id="wheel">
+      <div class="label"><span>Numerical <br/> integration</span></div>
+      <div class="label"><span>Integration by parts</span></div>
+      <div class="label"><span>Trig substitution</span></div>
+      <div class="label"><span>Partial fraction <br/> decomposition</span></div>
+      <div class="label"><span>U-substitution</span></div>
     </div>
-
-    $$\int_0^\infty \frac{x^3}{e^{x} - 1} \, dx = \Gamma(4) \cdot \zeta(4)$$
-    where $\Gamma(n) = (n-1)!$ and $\zeta(s)$ is the Riemann zeta function. For $s=4$, we have:
-    $$\zeta(4) = \frac{\pi^4}{90}$$
-    Therefore, we can write:
-    $$\int_0^\infty \frac{x^3}{e^{x} - 1} \, dx = 6 \cdot \frac{\pi^4}{90} = \frac{\pi^4}{15}$$
   </div>
 
+  <div id="ibp-explanation" style="
+    display: none;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    margin-top: 1rem;
+    border-left: 4px solid #ccc;
+    padding-left: 1rem;
+    transition: opacity 0.5s, max-height 0.5s;
+  ">
+    <p>
+      The inner integral is evaluated using u-substitution.  Let $u = n x$ (so $du = n\,dx$) to obtain
+    </p>
+    <p>
+      $$\int_{0}^{\infty} x^{3} e^{-nx}\,dx
+        = \int_{0}^{\infty} \left(\frac{u}{n}\right)^{3} e^{-u}\,\frac{du}{n}
+        = \frac{1}{n^{4}} \int_{0}^{\infty} u^{3} e^{-u}\,du
+        = \frac{1}{n^{4}} \cdot \Gamma(4).$$  
+    </p>
+    <p>
+      Thanks, wheel of integration, your insights have revealed an nth fraction of the Gamma Function, which is a known value $\Gamma(4) = 6$.
+    </p>
+    <button 
+    style="
+    background: linear-gradient(90deg, #fff8f2 0%, #f0e1cd 100%);
+    color: #000000;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    padding: 0.55em 1.1em;
+    font-size: 1em;
+    font-family: 'EB Garamond', serif;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(34,48,74,0.07);
+    transition: background 0.5s cubic-bezier(.4,0,.2,1), color 0.3s, box-shadow 0.2s, border-color 0.3s;
+    margin-bottom: 0.5em;
+    letter-spacing: 0.01em;
+  "
+  onmouseover="this.classList.add('academic-hover')"
+  onmouseout="this.classList.remove('academic-hover')"
+  onclick="showGammaDerivation()"
+  id="gamma-btn"
+>
+  Source?
+</button>
+</div>
+<div id="gamma-derivation" style="display: none; opacity: 0; margin-top: 1rem; border-left: 4px solid #ccc; padding-left: 1rem; transition: opacity 0.5s;">
+  <p>The gamma function is defined as:</p>
+  <p>$$\Gamma(n) = \int_0^\infty x^{n-1} e^{-x} \, dx$$</p>
+  <p>For $n=1$, we have:</p>
+  <p>$$\Gamma(1) = \int_0^\infty e^{-x} \, dx = 1$$</p>
+  <p>To prove that $\Gamma(n) = (n-1)!$, we can prove that $\Gamma(n+1) = n \cdot \Gamma(n)$:</p>
+  <p>$$\Gamma(n+1) = \int_0^\infty x^n e^{-x} \, dx$$</p>
+  <p>Using integration by farts, let $u = x^n$ and $dv = e^{-x} \, dx$. Then $du = n x^{n-1} \, dx$ and $v = -e^{-x}$. So we have:</p>
+  <p>$$\Gamma(n+1) = -x^n e^{-x} \bigg|_0^\infty + n \int_0^\infty x^{n-1} e^{-x} \, dx$$</p>
+  <p>The first term evaluates to 0 as $x \to \infty$ and $x=0$. So we have:</p>
+  <p>$$\Gamma(n+1) = n \int_0^\infty x^{n-1} e^{-x} \, dx$$</p>
+  <p>$$\Gamma(n+1) = n \cdot \Gamma(n)$$</p>
+  <p>By induction, we can show that $\Gamma(n) = (n-1)!$ for all positive integers $n$. Therefore, we can write:</p>
+  <p>$$\int_0^\infty x^3 e^{-nx} \, dx = \frac{1}{n^4} \cdot 6$$</p>
+  <p>Where $\Gamma(4) = 3! = 6$. Now we can substitute this back into the sum:</p>
+  <p>$$\sum_{n=1}^\infty \frac{6}{n^4}$$</p>
+    <p>We can factor out the 6 to get:</p>
+  <p>$$6 \sum_{n=1}^\infty \frac{1}{n^4}$$</p>
+  <p>And this is the Riemann zeta function $\zeta(4)$:</p>
+  <button 
+    style="background: linear-gradient(90deg, #fff8f2 0%, #f0e1cd 100%); color: #000000; border: 1px solid #e3e3e3; border-radius: 4px; padding: 0.55em 1.1em; font-size: 1em; font-family: 'EB Garamond', serif; cursor: pointer; box-shadow: 0 1px 4px rgba(34,48,74,0.07); transition: background 0.5s cubic-bezier(.4,0,.2,1), color 0.3s, box-shadow 0.2s, border-color 0.3s; margin-bottom: 0.5em; letter-spacing: 0.01em;" 
+    onclick="showZetaDerivation()"
+    id="zeta-btn"
+  >Source?</button>
+  <div id="zeta-derivation" style="display: none; opacity: 0; margin-top: 1rem; border-left: 4px solid #ccc; padding-left: 1rem; transition: opacity 0.5s;">
+  <p>Here we can use Fourier series and Parseval's Identity to derive the Riemann zeta function at 4:</p>
+  <p>The Riemann zeta function is defined as:</p>
+  $$\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}$$
+  <p>For $s=4$, we have:</p>
+  $$\zeta(4) = \sum_{n=1}^\infty \frac{1}{n^4}$$
+  <p>Using Fourier series and Parseval's Identity, we can derive $\zeta(4)$:</p>
+  <p>Consider the Fourier series for the function $f(x) = x^2$ on the interval $[-\pi, \pi]$:</p>
+  $$f(x) = x^2 = \frac{\pi^2}{3} + 4 \sum_{n=1}^\infty \frac{(-1)^n}{n^2} \cos(nx)$$
+  <p>Parseval's Identity states that:</p>
+  $$\frac{1}{\pi} \int_{-\pi}^\pi |f(x)|^2 \, dx = a_0^2 + 2 \sum_{n=1}^\infty (a_n^2 + b_n^2)$$
+  <p>Applying Parseval's Identity to $f(x) = x^2$, we can compute the coefficients and relate them to $\zeta(4)$. After simplifications, we find:</p>
+  $$\zeta(4) = \frac{\pi^4}{90}$$
+  <p>This completes the derivation of the Riemann zeta function at $s=4$.</p>
+  
+</div>
+  <p>Therefore, we can write:
+</div>
+  $$\int_0^\infty \frac{x^3}{e^{x} - 1} \, dx = 6 \cdot \frac{\pi^4}{90} = \frac{\pi^4}{15}$$ </p>
+<script>
+  let rotation = 0;
+  function spinWheel() {
+    const wheel = document.getElementById("wheel");
+    const ibp = document.getElementById("ibp-explanation");
+    // Always land on WINNER (segment 5, center at 324deg)
+    const finalAngle = 324; // center of WINNER segment
+    const fullSpins = 7; // number of full spins
+    rotation += fullSpins * 360 + (360 - finalAngle);
+    wheel.style.transform = `rotate(${rotation}deg)`;
+    // Hide explanation before spin
+    ibp.style.display = 'none';
+    ibp.style.opacity = 0;
+    ibp.style.maxHeight = '0';
+    // Reveal after spin animation (4s)
+    setTimeout(() => {
+      ibp.style.display = 'block';
+      setTimeout(() => {
+        ibp.style.opacity = 1;
+        ibp.style.maxHeight = '1000px';
+      }, 10);
+    }, 4000);
+  }
+  function showGammaDerivation() {
+    var el = document.getElementById('gamma-derivation');
+    if (el.style.display === 'block' || el.style.display === '') {
+      el.style.opacity = 0;
+      el.style.maxHeight = '0';
+      setTimeout(function() { el.style.display = 'none'; }, 500);
+    } else {
+      el.style.display = 'block';
+      setTimeout(function() {
+        el.style.opacity = 1;
+        el.style.maxHeight = '3000px'; // Increased from 1000px to 3000px
+      }, 10);
+    }
+  }
+  function showZetaDerivation() {
+    var el = document.getElementById('zeta-derivation');
+    if (el.style.display === 'block' || el.style.display === '') {
+      el.style.opacity = 0;
+      el.style.maxHeight = '0';
+      setTimeout(function() { el.style.display = 'none'; }, 500);
+    } else {
+      el.style.display = 'block';
+      setTimeout(function() {
+        el.style.opacity = 1;
+        el.style.maxHeight = '3000px'; // Increased from 1000px to 3000px
+      }, 10);
+    }
+  }
+</script>
+
+
   <h2>4. Conclusion</h2>
+
+  
+
   <p>Final thoughts and summary of your work go here.</p>
 </body>
 </html>
