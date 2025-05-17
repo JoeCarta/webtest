@@ -418,7 +418,16 @@
   }
 </script>
 
-
+<h2>4. Conclusion</h2>
+<p>
+  By evaluating the integral $\displaystyle\int_0^\infty \frac{x^3}{e^x - 1}\,dx = \frac{\pi^4}{15}$, we can substitute this result back into our earlier expression for the total energy density:
+</p>
+<p class="math">
+  $$U(T) = \frac{8\pi k^4 T^4}{c^3 h^3} \cdot \frac{\pi^4}{15} = \frac{8\pi^5 k^4}{15 c^3 h^3} T^4$$
+</p>
+<p>
+  This formula shows that the total energy density of black body radiation is proportional to the fourth power of temperature, which is the Stefan–Boltzmann law. The constant in front, $\frac{8\pi^5 k^4}{15 c^3 h^3}$, is the Stefan–Boltzmann constant which we are also able to derive by plugging into the left side of our equation in step 2. The integration over all frequencies ($\nu$ from $0$ to $\infty$) sums up the energy contributed by every possible photon frequency at temperature $T$. While the main insights from Planck's law come from the conceptual physics that lead ot quantum mechanics, actually carrying out the integral can be done with calculus to get a law (Stefan-Boltzmann Law) for total radiated power per unit area per unit time, from its derivative (Planck's Law) in spectral energy density per unit frequency.
+</p>
   <h2>Part 2 Code</h2>
   <a href="/calc.js/" download>
   <button>Download</button>
